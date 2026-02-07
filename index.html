@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trash to Treasure</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="page" id="page">
+    <header class="header">
+      <h1 class="title">Trash to Treasure</h1>
+      <p class="subtitle">Every choice counts.</p>
+    </header>
+
+    <div class="step-input" id="step-input">
+      <label for="item-input" class="input-label">What item do you want to take action on?</label>
+      <form class="input-form" id="input-form" action="#" aria-label="Submit item">
+        <div class="autocomplete-wrapper">
+          <input type="text" id="item-input" class="item-input" placeholder="e.g. plastic bottles, old clothes…" autocomplete="off" />
+          <div class="autocomplete-dropdown" id="autocomplete-dropdown" hidden></div>
+        </div>
+      </form>
+    </div>
+
+    <nav class="choices" id="choices" aria-label="Choose your action">
+      <a href="#" class="card card--reduce" id="reduce-link">
+        <span class="card__icon" aria-hidden="true">🔧</span>
+        <h2 class="card__title">Reduce</h2>
+        <p class="card__desc">Reduce consumer waste by repairing items instead of replacing them.</p>
+      </a>
+      <a href="#" class="card card--reuse" id="reuse-link">
+        <span class="card__icon" aria-hidden="true">↻</span>
+        <h2 class="card__title">Reuse</h2>
+        <p class="card__desc">Borrowing/Lending items instead of buying new ones.</p>
+      </a>
+      <a href="#" class="card card--recycle" id="recycle-link" data-action="recycle">
+        <span class="card__icon" aria-hidden="true">♻</span>
+        <h2 class="card__title">Recycle</h2>
+        <p class="card__desc">Turn used materials into new products and resources.</p>
+      </a>
+    </nav>
+
+    <section class="recycle-view" id="recycle-view" aria-label="Recycling centers" hidden>
+      <button type="button" class="back-button" onclick="navigateBack()">← Back</button>
+      <h1 class="recycle-view__title">Recycling centers for this item near you</h1>
+      <div class="distance-filter" id="distance-filter-recycle">
+        <label class="distance-filter__label">Distance:</label>
+        <button type="button" class="distance-filter__btn active" data-distance="all">Show all</button>
+        <button type="button" class="distance-filter__btn" data-distance="1609">Within 1mi</button>
+        <button type="button" class="distance-filter__btn" data-distance="8047">Within 5mi</button>
+        <button type="button" class="distance-filter__btn" data-distance="16093">Within 10mi</button>
+      </div>
+      <div class="recycle-view__content"></div>
+    </section>
+
+    <section class="reuse-choice-view" id="reuse-choice-view" aria-label="Borrow or lend" hidden>
+      <div class="reuse-choice-card">
+        <h2 class="reuse-choice-card__title">What would you like to do with this item?</h2>
+        <div class="reuse-choice-card__options">
+          <button type="button" class="reuse-choice-option" id="reuse-borrow-btn">Borrow the item</button>
+          <button type="button" class="reuse-choice-option" id="reuse-lend-btn">Lend out the item</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="reuse-result-view" id="reuse-borrow-view" aria-label="Borrow item" hidden>
+      <button type="button" class="back-button" onclick="navigateBack()">← Back</button>
+      <h1 class="reuse-result-view__title">Borrow this item</h1>
+      <div class="reuse-result-view__content"></div>
+    </section>
+
+    <section class="reuse-result-view" id="reuse-lend-view" aria-label="Lend item" hidden>
+      <button type="button" class="back-button" onclick="navigateBack()">← Back</button>
+      <h1 class="reuse-result-view__title">Lend out this item</h1>
+      <div class="reuse-result-view__content">
+        <form class="lend-form" id="lend-form" action="#" aria-label="Lend item details">
+          <label for="lend-description" class="lend-form__label">Description of the product</label>
+          <button type="button" class="ai-enhance-btn" id="ai-description-btn">✨ Generate with AI</button>
+          <textarea id="lend-description" class="lend-form__input lend-form__textarea" name="description" rows="4" placeholder="Describe the item you're lending…" required></textarea>
+          <label for="lend-name" class="lend-form__label">Your name</label>
+          <input type="text" id="lend-name" class="lend-form__input" name="name" placeholder="Name" required />
+          <label for="lend-email" class="lend-form__label">Email</label>
+          <input type="email" id="lend-email" class="lend-form__input" name="email" placeholder="you@example.com" required />
+          <label for="lend-phone" class="lend-form__label">Phone</label>
+          <input type="tel" id="lend-phone" class="lend-form__input" name="phone" placeholder="Phone number" required />
+          <button type="submit" class="lend-form__submit">Submit</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="reduce-view" id="reduce-view" aria-label="Repair shops" hidden>
+      <button type="button" class="back-button" onclick="navigateBack()">← Back</button>
+      <h1 class="reduce-view__title">Repair shops for this item near you</h1>
+      <div class="distance-filter" id="distance-filter-reduce">
+        <label class="distance-filter__label">Distance:</label>
+        <button type="button" class="distance-filter__btn active" data-distance="all">Show all</button>
+        <button type="button" class="distance-filter__btn" data-distance="1609">Within 1mi</button>
+        <button type="button" class="distance-filter__btn" data-distance="8047">Within 5mi</button>
+        <button type="button" class="distance-filter__btn" data-distance="16093">Within 10mi</button>
+      </div>
+      <div class="reduce-view__content"></div>
+    </section>
+
+    <footer class="footer">
+      <p>EHS Hackathon — Small steps, big impact.</p>
+    </footer>
+  </div>
+  <script>
+    (function () {
+      var page = document.getElementById('page');
+      var form = document.getElementById('input-form');
+      var reuseLink = document.getElementById('reuse-link');
+      var reuseChoiceView = document.getElementById('reuse-choice-view');
+      var reuseBorrowBtn = document.getElementById('reuse-borrow-btn');
+      var reuseLendBtn = document.getElementById('reuse-lend-btn');
+      var reuseBorrowView = document.getElementById('reuse-borrow-view');
+      var reuseLendView = document.getElementById('reuse-lend-view');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (window.submitItemAndClassify) window.submitItemAndClassify();
+      });
+
+      reuseLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        var smartSuggestion = document.getElementById('smart-suggestion');
+        if (smartSuggestion) smartSuggestion.remove();
+        page.classList.add('is-reuse-choice');
+        reuseChoiceView.removeAttribute('hidden');
+      });
+
+      reuseBorrowBtn.addEventListener('click', function () {
+        var smartSuggestion = document.getElementById('smart-suggestion');
+        if (smartSuggestion) smartSuggestion.remove();
+        page.classList.remove('is-reuse-choice');
+        reuseChoiceView.setAttribute('hidden', '');
+        page.classList.add('is-reuse-borrow');
+        reuseBorrowView.removeAttribute('hidden');
+      });
+
+      reuseLendBtn.addEventListener('click', function () {
+        var smartSuggestion = document.getElementById('smart-suggestion');
+        if (smartSuggestion) smartSuggestion.remove();
+        page.classList.remove('is-reuse-choice');
+        reuseChoiceView.setAttribute('hidden', '');
+        page.classList.add('is-reuse-lend');
+        reuseLendView.removeAttribute('hidden');
+      });
+    })();
+  </script>
+  <script src="main.js"></script>
+</body>
+</html>
